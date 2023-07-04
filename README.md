@@ -1,6 +1,6 @@
 # livecoding-campeonato-brasileiro
 
-Projeto para o Live Code do Digital Innovation One Inc.
+Projeto para o Live Code do Digital Innovation One.
 
 ## Clonando, compilando e iniciando o projeto
 
