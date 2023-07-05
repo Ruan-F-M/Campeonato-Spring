@@ -28,6 +28,7 @@ public class TimeServico {
 
     private Time toEntity(TimeDTO time) {
         Time entity = new Time();
+        entity.setId(time.getId());
         entity.setEstadio(time.getEstadio());
         entity.setSigla(time.getSigla());
         entity.setNome(time.getNome());
@@ -37,6 +38,7 @@ public class TimeServico {
 
     private TimeDTO toDto(Time entity) {
         TimeDTO dto = new TimeDTO();
+        dto.setId(entity.getId());
         dto.setEstadio(entity.getEstadio());
         dto.setSigla(entity.getSigla());
         dto.setNome(entity.getNome());
