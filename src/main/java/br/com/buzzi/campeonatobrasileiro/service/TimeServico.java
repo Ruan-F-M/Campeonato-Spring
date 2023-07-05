@@ -1,26 +1,47 @@
 package br.com.buzzi.campeonatobrasileiro.service;
 
+import br.com.buzzi.campeonatobrasileiro.dto.TimeDTO;
 import br.com.buzzi.campeonatobrasileiro.entity.Time;
 import br.com.buzzi.campeonatobrasileiro.repository.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Service
 public class TimeServico {
     @Autowired
     private TimeRepository repository;
-
-
-    public void cadastrarTime(Time time){
-        repository.save(time);
+    public void cadastrarTime(TimeDTO time){
+        Time entity = toEntity(time);
+        repository.save(entity);
     }
 
-    public List<Time> listarTimes(){
-        return repository.findAll();
+    private Time toEntity(TimeDTO time) {
+        Time entity = new Time();
+        entity.setEstadio(time.getEstadio());
+        entity.setSigla(time.getSigla());
+        entity.setNome(time.getNome());
+        entity.setUf(time.getUf());
+        return entity;
     }
-    public Time obterTime(Integer id){
-        return repository.findById(id).get();
+
+    private TimeDTO toDto(Time entity) {
+        TimeDTO dto = new TimeDTO();
+        dto.setEstadio(entity.getEstadio());
+        dto.setSigla(entity.getSigla());
+        dto.setNome(entity.getNome());
+        dto.setUf(entity.getUf());
+        return dto;
     }
+
+    public List<TimeDTO> listarTimes(){
+        return repository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
+    }
+    public TimeDTO obterTime(Integer id){
+        return toDto (repository.findById(id).get());
+    }
+
 
 }

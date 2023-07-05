@@ -1,5 +1,6 @@
 package br.com.buzzi.campeonatobrasileiro.rest;
 
+import br.com.buzzi.campeonatobrasileiro.dto.TimeDTO;
 import br.com.buzzi.campeonatobrasileiro.entity.Time;
 import br.com.buzzi.campeonatobrasileiro.service.TimeServico;
 import io.swagger.annotations.ApiOperation;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,18 +20,18 @@ public class TimeRestController {
     private TimeServico timeServico;
 
     @GetMapping
-    public ResponseEntity<List<Time>> getTimes(){
+    public ResponseEntity<List<TimeDTO>> getTimes(){
         return ResponseEntity.ok().body(timeServico.listarTimes());
     }
 
     @ApiOperation(value = "Obtém os dados um time")
     @GetMapping(value = "{id}")
-    public ResponseEntity<Time> getTime (@PathVariable Integer id){
+    public ResponseEntity<TimeDTO> getTime (@PathVariable Integer id){
         return ResponseEntity.ok().body(timeServico.obterTime(id));
     }
 
     @PostMapping
-    public ResponseEntity<Void> cadastrarTime(@RequestBody Time time){
+    public ResponseEntity<Void> cadastrarTime(@Valid @RequestBody TimeDTO time){
         timeServico.cadastrarTime(time);
         return ResponseEntity.ok().build();
     }
