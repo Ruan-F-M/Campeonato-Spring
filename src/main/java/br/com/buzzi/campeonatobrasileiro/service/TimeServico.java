@@ -6,6 +6,7 @@ import br.com.buzzi.campeonatobrasileiro.repository.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,15 +15,15 @@ public class TimeServico {
     @Autowired
     private TimeRepository repository;
 
-    public TimeDTO cadastrarTime(TimeDTO time) throws  Exception{
+    public TimeDTO cadastrarTime(TimeDTO time) throws Exception {
         Time entity = toEntity(time);
 
         if (time.getId() == null) {
-            Integer newId = Math.toIntExact(repository.count()+1);
+            Integer newId = Math.toIntExact(repository.count() + 1);
             time.setId(newId);
             entity = repository.save(entity);
             return toDto(entity);
-        }else {
+        } else {
             throw new Exception("Time já existe.");
         }
     }
@@ -47,12 +48,22 @@ public class TimeServico {
         return dto;
     }
 
-    public List<TimeDTO> listarTimes(){
+    public List<TimeDTO> listarTimes() {
         return repository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
-    }
-    public TimeDTO obterTime(Integer id){
-        return toDto (repository.findById(id).get());
+        /*List<TimeDTO> timesDtos = new ArrayList<>();
+        final List<Time> all = repository.findAll();
+        all.forEach(time -> {
+            timesDtos.add(toDto(time));
+        });
+        return timesDtos;*/
+
     }
 
+    public TimeDTO obterTime(Integer id) {
+        return toDto(repository.findById(id).get());
+    }
 
+    public List<Time> findAll() {
+        return repository.findAll();
+    }
 }

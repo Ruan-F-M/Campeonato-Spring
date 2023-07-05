@@ -4,6 +4,7 @@ import lombok.Data;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -14,6 +15,9 @@ public class Jogo {
     private Integer golsTime1;
     private Integer golsTime2;
     private Integer publicoPagante;
+    private LocalDateTime data;
+    private Integer rodada;
+    private Boolean encerrado;
 
     @ManyToOne
     @JoinColumn(name = "time1")
