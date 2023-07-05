@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class TimeServico {
     @Autowired
     private TimeRepository repository;
+
     public TimeDTO cadastrarTime(TimeDTO time) throws  Exception{
         Time entity = toEntity(time);
 

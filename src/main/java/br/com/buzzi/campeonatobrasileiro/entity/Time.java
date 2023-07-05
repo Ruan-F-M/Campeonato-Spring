@@ -10,6 +10,7 @@ public class Time {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     @Column(length = 20)
     private String nome;
     @Column(length = 4)
