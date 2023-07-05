@@ -1,20 +1,23 @@
 package br.com.buzzi.campeonatobrasileiro.service;
 
+import br.com.buzzi.campeonatobrasileiro.dto.JogoDTO;
+import br.com.buzzi.campeonatobrasileiro.entity.Jogo;
 import br.com.buzzi.campeonatobrasileiro.entity.Time;
 import br.com.buzzi.campeonatobrasileiro.repository.JogoRepository;
 import br.com.buzzi.campeonatobrasileiro.repository.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class JogoService {
 
     @Autowired
     JogoRepository jogoRepository;
-
     @Autowired
     TimeRepository timeServico;
 
@@ -63,11 +66,10 @@ public class JogoService {
 
         jogos.forEach(jogo -> {
             Time time1 = jogo.getTime2();
-            Time time2 = jogo.getTime2();
+            Time time2 = jogo.getTime1();
             jogos2.add(gerarJogo(jogo.getData().plusDays(7 * jogos.size()), jogo.getRodada() + jogos.size(), time1, time2));
         });
         jogoRepository.saveAll(jogos2);
-
     }
 
     private Jogo gerarJogo(LocalDateTime dataJogo, Integer rodada, Time time1, Time time2) {
@@ -81,5 +83,23 @@ public class JogoService {
         jogo.setGolsTime2(0);
         jogo.setPublicoPagante(0);
         return jogo;
+    }
+
+    private JogoDTO entityToDTO(Jogo entity) {
+        JogoDTO dto = new JogoDTO();
+        dto.setId(entity.getId());
+        dto.setData(entity.getData());
+        dto.setEncerrado(entity.getEncerrado());
+        dto.setGolsTime1(entity.getGolsTime1());
+        dto.setGolsTime2(entity.getGolsTime2());
+        dto.setPublicoPagante(entity.getPublicoPagante());
+        dto.setRodada(entity.getRodada());
+        dto.setTime1(timeServico.toDto(entity.getTime1()));
+        dto.setTime2(timeServico.toDto(entity.getTime2()));
+        return dto;
+    }
+
+    public List<Jogo> obterJogos(){
+        return jogoRepository.findAll();
     }
 }
