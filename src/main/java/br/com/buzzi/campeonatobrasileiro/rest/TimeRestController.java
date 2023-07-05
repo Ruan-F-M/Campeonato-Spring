@@ -2,6 +2,7 @@ package br.com.buzzi.campeonatobrasileiro.rest;
 
 import br.com.buzzi.campeonatobrasileiro.entity.Time;
 import br.com.buzzi.campeonatobrasileiro.service.TimeServico;
+import io.swagger.annotations.ApiOperation;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,14 @@ public class TimeRestController {
         return ResponseEntity.ok().body(timeServico.listarTimes());
     }
 
+    @ApiOperation(value = "Obtém os dados um time")
     @GetMapping(value = "{id}")
     public ResponseEntity<Time> getTime (@PathVariable Integer id){
         return ResponseEntity.ok().body(timeServico.obterTime(id));
     }
 
     @PostMapping
-    public ResponseEntity<Void> cadastrarTime(Time time){
+    public ResponseEntity<Void> cadastrarTime(@RequestBody Time time){
         timeServico.cadastrarTime(time);
         return ResponseEntity.ok().build();
     }
