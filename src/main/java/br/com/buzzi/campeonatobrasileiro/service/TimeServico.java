@@ -13,9 +13,17 @@ import java.util.stream.Collectors;
 public class TimeServico {
     @Autowired
     private TimeRepository repository;
-    public void cadastrarTime(TimeDTO time){
+    public TimeDTO cadastrarTime(TimeDTO time) throws  Exception{
         Time entity = toEntity(time);
-        repository.save(entity);
+
+        if (time.getId() == null) {
+            Integer newId = Math.toIntExact(repository.count()+1);
+            time.setId(newId);
+            entity = repository.save(entity);
+            return toDto(entity);
+        }else {
+            throw new Exception("Time já existe.");
+        }
     }
 
     private Time toEntity(TimeDTO time) {

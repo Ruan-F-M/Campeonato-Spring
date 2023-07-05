@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 public class Time {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(length = 20)
     private String nome;
