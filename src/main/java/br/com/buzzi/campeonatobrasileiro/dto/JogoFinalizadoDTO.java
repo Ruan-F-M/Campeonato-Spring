@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class JogoFinalizadoDTO {
 
-    private Integer goldTime1;
-    private Integer goldTime2;
+    private Integer golsTime1;
+    private Integer golsTime2;
     private Integer publicoPagante;
 
 }

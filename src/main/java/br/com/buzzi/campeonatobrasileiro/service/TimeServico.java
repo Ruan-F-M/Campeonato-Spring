@@ -39,13 +39,13 @@ public class TimeServico {
     }
 
     public TimeDTO toDto(Time entity) {
-        TimeDTO dto = new TimeDTO();
+        TimeDTO timeDTO = new TimeDTO();
         dto.setId(entity.getId());
         dto.setEstadio(entity.getEstadio());
         dto.setSigla(entity.getSigla());
         dto.setNome(entity.getNome());
         dto.setUf(entity.getUf());
-        return dto;
+        return timeDTO;
     }
 
     public List<TimeDTO> listarTimes() {
