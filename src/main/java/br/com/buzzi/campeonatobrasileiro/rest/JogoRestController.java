@@ -1,6 +1,7 @@
 package br.com.buzzi.campeonatobrasileiro.rest;
 
 import br.com.buzzi.campeonatobrasileiro.dto.JogoDTO;
+import br.com.buzzi.campeonatobrasileiro.dto.JogoFinalizadoDTO;
 import br.com.buzzi.campeonatobrasileiro.entity.Jogo;
 import br.com.buzzi.campeonatobrasileiro.service.JogoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class JogoRestController {
     }
 
     @PostMapping(value = "/finalizar/{id}")
-    public ResponseEntity<JogoDTO> finalizar(@PathVariable Integer id, @RequestBody JogoDTO jogoDto) throws Exception {
+    public ResponseEntity<JogoDTO> finalizar(@PathVariable Integer id, @RequestBody JogoFinalizadoDTO jogoDto) throws Exception {
         return ResponseEntity.ok().body(jogoService.finalizar(id, jogoDto));
     }
 

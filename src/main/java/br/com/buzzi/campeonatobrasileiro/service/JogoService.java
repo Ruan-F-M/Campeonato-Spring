@@ -1,6 +1,7 @@
 package br.com.buzzi.campeonatobrasileiro.service;
 
 import br.com.buzzi.campeonatobrasileiro.dto.JogoDTO;
+import br.com.buzzi.campeonatobrasileiro.dto.JogoFinalizadoDTO;
 import br.com.buzzi.campeonatobrasileiro.entity.Jogo;
 import br.com.buzzi.campeonatobrasileiro.entity.Time;
 import br.com.buzzi.campeonatobrasileiro.repository.JogoRepository;
@@ -77,7 +78,7 @@ public class JogoService {
     private Jogo gerarJogo(LocalDateTime dataJogo, Integer rodada, Time time1, Time time2) {
         Jogo jogo = new Jogo();
         jogo.setTime1(time1);
-        jogo.setTime1(time1);
+        jogo.setTime2(time2);
         jogo.setRodada(rodada);
         jogo.setData(dataJogo);
         jogo.setEncerrado(false);
@@ -105,7 +106,7 @@ public class JogoService {
         return jogoRepository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
     }
 
-    public JogoDTO finalizar(Integer id, JogoDTO jogoDto) throws Exception {
+    public JogoDTO finalizar(Integer id, JogoFinalizadoDTO jogoDto) throws Exception {
         Optional <Jogo> optionalJogo = jogoRepository.findById(id);
         if(optionalJogo.isPresent()) {
             final Jogo jogo = optionalJogo.get();
