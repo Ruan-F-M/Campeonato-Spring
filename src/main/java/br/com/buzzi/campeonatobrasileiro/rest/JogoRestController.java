@@ -1,8 +1,8 @@
 package br.com.buzzi.campeonatobrasileiro.rest;
 
+import br.com.buzzi.campeonatobrasileiro.dto.ClassificacaoDTO;
 import br.com.buzzi.campeonatobrasileiro.dto.JogoDTO;
 import br.com.buzzi.campeonatobrasileiro.dto.JogoFinalizadoDTO;
-import br.com.buzzi.campeonatobrasileiro.entity.Jogo;
 import br.com.buzzi.campeonatobrasileiro.service.JogoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +34,10 @@ public class JogoRestController {
         return ResponseEntity.ok().body(jogoService.finalizar(id, jogoDto));
     }
 
-//    @GetMapping(value = "/classificacao")
-//    public ResponseEntity<classificacaoDTO> classificacao () {
-//        return ResponseEntity.ok().body(jogoService.obterClassificacao());
-//    }
+    @GetMapping(value = "/classificacao")
+    public ResponseEntity<ClassificacaoDTO> classificacao () {
+        return ResponseEntity.ok().body(jogoService.obterClassificacao());
+    }
     @GetMapping(value = "/jogo/{id}")
     public ResponseEntity<JogoDTO> obterJogo (@PathVariable Integer id){
         return ResponseEntity.ok().body(jogoService.obterJogo(id));

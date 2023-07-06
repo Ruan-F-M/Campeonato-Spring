@@ -30,15 +30,15 @@ public class JogoService {
         final List<Time> times = timeServico.findAll();
         List<Time> all1 = new ArrayList<>();
         List<Time> all2 = new ArrayList<>();
-        all1.addAll(times);
-        all2.addAll(times);
+        all1.addAll(times); //.subList(0, times.size()/2));
+        all2.addAll(times); //.subList(all1.size(), times.size()));
 
         jogoRepository.deleteAll();
 
         List<Jogo> jogos = new ArrayList<>();
 
         int t = times.size();
-        int m = times.size();
+        int m = times.size() / 2;
         LocalDateTime dataJogo = primeiraRodada;
         Integer rodada = 0;
         for (int i = 0; i < t -1; i++){
@@ -123,7 +123,7 @@ public class JogoService {
     }
     public ClassificacaoDTO obterClassificacao() {
         //(quantidade vitorias * 3) + quantidade de empates
-        ClassificacaoTimeDTO classificacaoDto = new ClassificacaoTimeDTO();
+        ClassificacaoDTO classificacaoDto = new ClassificacaoDTO();
         final List<Time> times = timeServico.findAll();
 
         times.forEach(time -> {
@@ -158,15 +158,18 @@ public class JogoService {
                 golsMarcados.set(golsMarcados.get() + jogo.getGolsTime2());
                 golsSofridos.set(golsSofridos.get() + jogo.getGolsTime1());
             });
-            classificacaoDto.setIdTime(time.getId());
-            classificacaoDto.setTime(time.getNome());
-            classificacaoDto.setPontos((vitorias.get() * 3) + empates.get());
-            classificacaoDto.setDerrotas(derrotas.get());
-            classificacaoDto.setEmpates(empates.get());
-            classificacaoDto.setVitorias(vitorias.get());
-            classificacaoDto.setGolsMarcados(golsMarcados.get());
-            classificacaoDto.setGolsSofridos(golsSofridos.get());
-            classificacaoDto.setJogos(derrotas.get() + empates.get() + vitorias.get());
+
+            ClassificacaoTimeDTO classificacaoTimeDTO = new ClassificacaoTimeDTO();
+            classificacaoTimeDTO.setIdTime(time.getId());
+            classificacaoTimeDTO.setTime(time.getNome());
+            classificacaoTimeDTO.setPontos((vitorias.get() * 3) + empates.get());
+            classificacaoTimeDTO.setDerrotas(derrotas.get());
+            classificacaoTimeDTO.setEmpates(empates.get());
+            classificacaoTimeDTO.setVitorias(vitorias.get());
+            classificacaoTimeDTO.setGolsMarcados(golsMarcados.get());
+            classificacaoTimeDTO.setGolsSofridos(golsSofridos.get());
+            classificacaoTimeDTO.setJogos(derrotas.get() + empates.get() + vitorias.get());
+            classificacaoDto.getTimes().add(classificacaoDto);
 
         });
 
