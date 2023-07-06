@@ -17,12 +17,12 @@ public class Jogo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private LocalDateTime data;
     private Integer golsTime1;
     private Integer golsTime2;
     private Integer publicoPagante;
-    private LocalDateTime data;
-    private Integer rodada;
     private Boolean encerrado;
+    private Integer rodada;
 
     @ManyToOne
     @JoinColumn(name = "time1")

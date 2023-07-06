@@ -172,6 +172,7 @@ public class JogoService {
             classificacaoDto.getTimes().add(classificacaoDto);
 
         });
+        classificacaoDto.getTimes().sort();
 
         return classificacaoDto;
     }
