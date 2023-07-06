@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "times")
+@RequestMapping(value = "/times")
 public class TimeRestController {
 
     @Autowired

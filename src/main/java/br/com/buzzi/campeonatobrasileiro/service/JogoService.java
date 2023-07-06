@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -125,7 +126,6 @@ public class JogoService {
         //(quantidade vitorias * 3) + quantidade de empates
         ClassificacaoDTO classificacaoDto = new ClassificacaoDTO();
         final List<Time> times = timeServico.findAll();
-
         times.forEach(time -> {
             final List<Jogo> jogosMandante = jogoRepository.findByTime1AndEncerrado(time, true);
             final List<Jogo> jogosVisitante = jogoRepository.findByTime2AndEncerrado(time, true);
@@ -146,7 +146,6 @@ public class JogoService {
                 golsMarcados.set(golsMarcados.get() + jogo.getGolsTime1());
                 golsSofridos.set(golsSofridos.get() + jogo.getGolsTime2());
             });
-
             jogosVisitante.forEach(jogo -> {
                 if (jogo.getGolsTime2() > jogo.getGolsTime1()){
                     vitorias.getAndSet(vitorias.get() + 1);
@@ -159,7 +158,7 @@ public class JogoService {
                 golsSofridos.set(golsSofridos.get() + jogo.getGolsTime1());
             });
 
-            ClassificacaoTimeDTO classificacaoTimeDTO = new ClassificacaoTimeDTO();
+            ClassificacaoTimeDTO classificacaoTimeDto = new ClassificacaoTimeDTO();
             classificacaoTimeDTO.setIdTime(time.getId());
             classificacaoTimeDTO.setTime(time.getNome());
             classificacaoTimeDTO.setPontos((vitorias.get() * 3) + empates.get());
@@ -169,11 +168,14 @@ public class JogoService {
             classificacaoTimeDTO.setGolsMarcados(golsMarcados.get());
             classificacaoTimeDTO.setGolsSofridos(golsSofridos.get());
             classificacaoTimeDTO.setJogos(derrotas.get() + empates.get() + vitorias.get());
-            classificacaoDto.getTimes().add(classificacaoDto);
+            classificacaoDto.getTimes().add(classificacaoTimeDto);
 
         });
-        classificacaoDto.getTimes().sort();
-
+        Collections.sort(classificacaoDto.getTimes(), Collections.reverseOrder());
+        int posicao = 0;
+        for (ClassificacaoTimeDTO time : classificacaoDto.getTimes()) {
+            time.setPosicao(posicao++);
+        }
         return classificacaoDto;
     }
     public JogoDTO obterJogo(Integer id) {
