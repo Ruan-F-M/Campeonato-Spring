@@ -1,5 +1,6 @@
 package br.com.buzzi.campeonatobrasileiro.repository;
 
+import br.com.buzzi.campeonatobrasileiro.dto.TimeDTO;
 import br.com.buzzi.campeonatobrasileiro.entity.Time;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -25,7 +25,7 @@ public class JogoService {
     @Autowired
     JogoRepository jogoRepository;
     @Autowired
-    TimeRepository timeServico;
+    TimeServico timeServico;
 
     public void gerarJogos(LocalDateTime primeiraRodada) {
         final List<Time> times = timeServico.findAll();
@@ -159,15 +159,15 @@ public class JogoService {
             });
 
             ClassificacaoTimeDTO classificacaoTimeDto = new ClassificacaoTimeDTO();
-            classificacaoTimeDTO.setIdTime(time.getId());
-            classificacaoTimeDTO.setTime(time.getNome());
-            classificacaoTimeDTO.setPontos((vitorias.get() * 3) + empates.get());
-            classificacaoTimeDTO.setDerrotas(derrotas.get());
-            classificacaoTimeDTO.setEmpates(empates.get());
-            classificacaoTimeDTO.setVitorias(vitorias.get());
-            classificacaoTimeDTO.setGolsMarcados(golsMarcados.get());
-            classificacaoTimeDTO.setGolsSofridos(golsSofridos.get());
-            classificacaoTimeDTO.setJogos(derrotas.get() + empates.get() + vitorias.get());
+            classificacaoTimeDto.setIdTime(time.getId());
+            classificacaoTimeDto.setTime(time.getNome());
+            classificacaoTimeDto.setPontos((vitorias.get() * 3) + empates.get());
+            classificacaoTimeDto.setDerrotas(derrotas.get());
+            classificacaoTimeDto.setEmpates(empates.get());
+            classificacaoTimeDto.setVitorias(vitorias.get());
+            classificacaoTimeDto.setGolsMarcados(golsMarcados.get());
+            classificacaoTimeDto.setGolsSofridos(golsSofridos.get());
+            classificacaoTimeDto.setJogos(derrotas.get() + empates.get() + vitorias.get());
             classificacaoDto.getTimes().add(classificacaoTimeDto);
 
         });
