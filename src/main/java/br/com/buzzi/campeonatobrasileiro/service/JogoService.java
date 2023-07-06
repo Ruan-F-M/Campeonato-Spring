@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JogoService {
@@ -85,7 +87,7 @@ public class JogoService {
         return jogo;
     }
 
-    private JogoDTO entityToDTO(Jogo entity) {
+    private JogoDTO toDto(Jogo entity) {
         JogoDTO dto = new JogoDTO();
         dto.setId(entity.getId());
         dto.setData(entity.getData());
@@ -99,7 +101,26 @@ public class JogoService {
         return dto;
     }
 
-    public List<Jogo> obterJogos(){
-        return jogoRepository.findAll();
+    public List<JogoDTO> listarJogos(){
+        return jogoRepository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
+    }
+
+    public JogoDTO finalizar(Integer id, JogoDTO jogoDto) throws Exception {
+        Optional <Jogo> optionalJogo = jogoRepository.findById(id);
+        if(optionalJogo.isPresent()) {
+            final Jogo jogo = optionalJogo.get();
+            jogo.setGolsTime1(jogoDto.getGolsTime1());
+            jogo.setGolsTime2(jogoDto.getGolsTime2());
+            jogo.setEncerrado(true);
+            jogo.setPublicoPagante(jogoDto.getPublicoPagante());
+            return toDto (jogoRepository.save(jogo));
+        }else {
+            throw new Exception("Jogo não existe");
+        }
+    }
+//    public Object obterClassificacao() {
+//    }
+    public JogoDTO obterJogo(Integer id) {
+        return toDto(jogoRepository.findById(id).get());
     }
 }
