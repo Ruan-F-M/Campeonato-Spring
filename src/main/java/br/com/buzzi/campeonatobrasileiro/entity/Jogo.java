@@ -10,9 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
+@Data
 public class Jogo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,3 +32,5 @@ public class Jogo {
     @JoinColumn(name = "time2")
     private Time time2;
 }
+
+

@@ -1,6 +1,7 @@
 package br.com.buzzi.campeonatobrasileiro.service;
 
 import br.com.buzzi.campeonatobrasileiro.dto.ClassificacaoDTO;
+import br.com.buzzi.campeonatobrasileiro.dto.ClassificacaoTimeDTO;
 import br.com.buzzi.campeonatobrasileiro.dto.JogoDTO;
 import br.com.buzzi.campeonatobrasileiro.dto.JogoFinalizadoDTO;
 import br.com.buzzi.campeonatobrasileiro.entity.Jogo;
@@ -122,7 +123,7 @@ public class JogoService {
     }
     public ClassificacaoDTO obterClassificacao() {
         //(quantidade vitorias * 3) + quantidade de empates
-        ClassificacaoDTO classificacaoDto = new ClassificacaoDTO();
+        ClassificacaoTimeDTO classificacaoDto = new ClassificacaoTimeDTO();
         final List<Time> times = timeServico.findAll();
 
         times.forEach(time -> {
@@ -147,10 +148,29 @@ public class JogoService {
             });
 
             jogosVisitante.forEach(jogo -> {
+                if (jogo.getGolsTime2() > jogo.getGolsTime1()){
+                    vitorias.getAndSet(vitorias.get() + 1);
+                } else if (jogo.getGolsTime2() < jogo.getGolsTime1()) {
+                    derrotas.getAndSet(derrotas.get() + 1);
+                } else {
+                    empates.getAndSet(empates.get() + 1);
+                }
+                golsMarcados.set(golsMarcados.get() + jogo.getGolsTime2());
+                golsSofridos.set(golsSofridos.get() + jogo.getGolsTime1());
             });
+            classificacaoDto.setIdTime(time.getId());
+            classificacaoDto.setTime(time.getNome());
+            classificacaoDto.setPontos((vitorias.get() * 3) + empates.get());
+            classificacaoDto.setDerrotas(derrotas.get());
+            classificacaoDto.setEmpates(empates.get());
+            classificacaoDto.setVitorias(vitorias.get());
+            classificacaoDto.setGolsMarcados(golsMarcados.get());
+            classificacaoDto.setGolsSofridos(golsSofridos.get());
+            classificacaoDto.setJogos(derrotas.get() + empates.get() + vitorias.get());
+
         });
 
-        return obterClassificacao();
+        return classificacaoDto;
     }
     public JogoDTO obterJogo(Integer id) {
         return toDto(jogoRepository.findById(id).get());
