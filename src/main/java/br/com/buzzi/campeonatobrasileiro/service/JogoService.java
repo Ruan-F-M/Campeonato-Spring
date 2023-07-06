@@ -1,5 +1,6 @@
 package br.com.buzzi.campeonatobrasileiro.service;
 
+import br.com.buzzi.campeonatobrasileiro.dto.ClassificacaoDTO;
 import br.com.buzzi.campeonatobrasileiro.dto.JogoDTO;
 import br.com.buzzi.campeonatobrasileiro.dto.JogoFinalizadoDTO;
 import br.com.buzzi.campeonatobrasileiro.entity.Jogo;
@@ -9,11 +10,11 @@ import br.com.buzzi.campeonatobrasileiro.repository.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -119,8 +120,38 @@ public class JogoService {
             throw new Exception("Jogo não existe");
         }
     }
-//    public Object obterClassificacao() {
-//    }
+    public ClassificacaoDTO obterClassificacao() {
+        //(quantidade vitorias * 3) + quantidade de empates
+        ClassificacaoDTO classificacaoDto = new ClassificacaoDTO();
+        final List<Time> times = timeServico.findAll();
+
+        times.forEach(time -> {
+            final List<Jogo> jogosMandante = jogoRepository.findByTime1AndEncerrado(time, true);
+            final List<Jogo> jogosVisitante = jogoRepository.findByTime2AndEncerrado(time, true);
+            AtomicReference<Integer> vitorias = new AtomicReference<>(0);
+            AtomicReference<Integer> empates = new AtomicReference<>(0);
+            AtomicReference<Integer> derrotas = new AtomicReference<>(0);
+            AtomicReference<Integer> golsSofridos = new AtomicReference<>(0);
+            AtomicReference<Integer> golsMarcados = new AtomicReference<>(0);
+
+            jogosMandante.forEach(jogo -> {
+                if (jogo.getGolsTime1() > jogo.getGolsTime2()){
+                    vitorias.getAndSet(vitorias.get() + 1);
+                } else if (jogo.getGolsTime1() < jogo.getGolsTime2()) {
+                    derrotas.getAndSet(derrotas.get() + 1);
+                } else {
+                    empates.getAndSet(empates.get() + 1);
+                }
+                golsMarcados.set(golsMarcados.get() + jogo.getGolsTime1());
+                golsSofridos.set(golsSofridos.get() + jogo.getGolsTime2());
+            });
+
+            jogosVisitante.forEach(jogo -> {
+            });
+        });
+
+        return obterClassificacao();
+    }
     public JogoDTO obterJogo(Integer id) {
         return toDto(jogoRepository.findById(id).get());
     }
