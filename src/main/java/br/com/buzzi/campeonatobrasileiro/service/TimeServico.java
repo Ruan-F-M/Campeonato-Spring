@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
 @Service
 public class TimeServico {
     @Autowired
-    private TimeRepository repository;
+    private TimeRepository timeRepository;
 
     public TimeDTO cadastrarTime(TimeDTO time) throws Exception {
         Time entity = toEntity(time);
 
         if (time.getId() == null) {
-            Integer newId = Math.toIntExact(repository.count() + 1);
+            Integer newId = Math.toIntExact(timeRepository.count() + 1);
             time.setId(newId);
-            entity = repository.save(entity);
+            entity = timeRepository.save(entity);
             return toDto(entity);
         } else {
             throw new Exception("Time já existe.");
@@ -48,7 +48,7 @@ public class TimeServico {
     }
 
     public List<TimeDTO> listarTimes() {
-        return repository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
+        return timeRepository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
         /*List<TimeDTO> timesDtos = new ArrayList<>();
         final List<Time> all = repository.findAll();
         all.forEach(time -> {
@@ -59,10 +59,10 @@ public class TimeServico {
     }
 
     public TimeDTO obterTime(Integer id) {
-        return toDto(repository.findById(id).get());
+        return toDto(timeRepository.findById(id).get());
     }
 
     public List<Time> findAll() {
-        return repository.findAll();
+        return timeRepository.findAll();
     }
 }
